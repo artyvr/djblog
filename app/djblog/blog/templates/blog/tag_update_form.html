@@ -1,0 +1,35 @@
+{% extends 'blog/base_blog.html' %}
+{% block css %}{% endblock%}
+{% block title %}Изменить тег {{ tag.title|title }}{% endblock%}
+{% block content %}
+<a class="icon-link icon-link-hover" href="javascript:history.back()">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+        <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+        <use xlink:href="#arrow-right"></use>
+    </svg>
+    Назад
+  </a>
+<div class="pricing-header p-3 pb-md-4 mx-auto text-center">
+    <h2 class="display-5 fw-normal text-body-emphasis">Тэг {{ tag.title|title }}</h2>
+</div>
+<div class="col-lg-6 mx-auto mb-4">
+    <form action="{{ tag.get_update_url }}" method="post">
+        {% csrf_token %}
+        {% for field in form %}
+        {% if field.errors %}
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                {{ field.errors }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endif %}
+        <div class="form-floating mb-3">
+            {{ field }}
+            <label for="{{ field.auto_id }}">{{ field.label }}</label>
+        </div>
+        {% endfor %}
+        <button type="submit" class="btn btn-primary">Сохранить</button>
+    </form>
+</div>
+
+{% endblock%}
+{% block js %}{% endblock%}

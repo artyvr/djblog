@@ -1,0 +1,55 @@
+version: '3'
+services:
+
+  database:
+    image: postgres:alpine
+    volumes:
+      - ./pg_data:/var/lib/postgresql/data/pgdata
+    environment:
+      - POSTGRES_DB=djblog
+      - POSTGRES_USER=djblog
+      - POSTGRES_PASSWORD=djblog
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    restart: always
+
+  redis:
+    image: redis:alpine
+    hostname: redis
+    restart: always
+    depends_on:
+      - database
+
+  app:
+    build:
+      context: .
+    ports:
+      - 8000:8000
+    volumes:
+      - ./djblog:/djblog
+    environment:
+      - DB_HOST=database
+      - DB_NAME=djblog
+      - DB_USER=djblog
+      - DB_PASS=djblog
+    restart: always
+    command: >
+      sh -c "python manage.py runserver 0.0.0.0:8000"
+    links:
+      - database
+      - redis
+    depends_on:
+      - database
+      - redis
+
+  nginx:
+    image: nginx:alpine
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./djblog/static:/var/www/static
+    links:
+      - app
+    depends_on:
+      - app
+    ports:
+      - 8989:80
+  

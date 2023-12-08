@@ -32,8 +32,7 @@ services:
       - DB_USER=djblog
       - DB_PASS=djblog
     restart: always
-    command: >
-      sh -c "python manage.py runserver 0.0.0.0:8000"
+    command: gunicorn --workers 2 djblog.wsgi --bind 0.0.0.0:8000
     links:
       - database
       - redis
@@ -45,5 +44,4 @@ services:
     links:
       - app
     ports:
-      - 8989:80
-  
+      - 80:8989

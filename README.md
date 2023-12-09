@@ -8,6 +8,6 @@
 - redis
 - nginx
 
-с использованием 
+### с использованием 
 - docker 
 - docker-compose

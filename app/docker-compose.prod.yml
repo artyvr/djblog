@@ -5,11 +5,8 @@ services:
     image: postgres:alpine
     volumes:
       - ./pg_data:/var/lib/postgresql/data/pgdata
-    environment:
-      - POSTGRES_DB=djblog
-      - POSTGRES_USER=djblog
-      - POSTGRES_PASSWORD=djblog
-      - PGDATA=/var/lib/postgresql/data/pgdata
+    env_file:
+      - .env.prod.db
     restart: always
 
   redis:
@@ -22,17 +19,14 @@ services:
   app:
     build:
       context: .
-    ports:
-      - 8000:8000
+    expose:
+      - 8000
     volumes:
-      - ./djblog:/djblog
-    environment:
-      - DB_HOST=database
-      - DB_NAME=djblog
-      - DB_USER=djblog
-      - DB_PASS=djblog
+      - ./djblog/static:/djblog/static
+    env_file:
+      - .env.prod
     restart: always
-    command: python manage.py runserver --bind 0.0.0.0:8000
+    command: gunicorn djblog.wsgi --bind 0.0.0.0:8000
     links:
       - database
       - redis
@@ -45,4 +39,3 @@ services:
       - app
     ports:
       - 80:8989
-      

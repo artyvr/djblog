@@ -2,7 +2,6 @@
 {% block css %}{% endblock%}
 {% block title %}dj blog{% endblock%}
 {% block content %}
-
 {% for tag in tags %}
 <article class="mb-4">
     <h2 class="display-5 mb-1"><a class="link-body-emphasis link-offset-2 link-underline link-underline-opacity-0" href="">{{ tag.title }}</a></h2>
@@ -17,6 +16,5 @@
       </a>
 </article>
 {% endfor %}
-
 {% endblock%}
 {% block js %}{% endblock%}

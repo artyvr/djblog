@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block css %}
+{% endblock%}
+{% block title %}500 Server error{% endblock%}
+{% block content %}
+<div class="m-auto mt-5">
+    <h2 class="display-4 mb-3 lead"><strong>Ошибка 500</strong></h2>
+    <p class="display-6">Ошибка сервера, по-русски говоря...</p>
+    {% include 'blog/includes/back_btn.html' %}
+</div>
+{% endblock%}
+{% block js %}{% endblock%}

@@ -2,7 +2,6 @@
 {% block css %}{% endblock%}
 {% block title %}{{ post.title }}{% endblock%}
 {% block content %}
-
 <article class="mb-4">
     <h2 class="display-5 link-body-emphasis mb-1">{{ post.title }}</h2>
     <p class="mb-2"><em>{{ post.date_pub }} <a href="#">{{ post.user }}</a></em></p>
@@ -14,14 +13,7 @@
             </span>
         {% endfor %}
     </p>
-    <a class="icon-link icon-link-hover" href="javascript:history.back()">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
-            <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
-            <use xlink:href="#arrow-right"></use>
-        </svg>
-        Назад
-      </a>
+    {% include 'blog/includes/back_btn.html' %}
 </article>
-
 {% endblock%}
 {% block js %}{% endblock%}

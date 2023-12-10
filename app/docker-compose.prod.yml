@@ -35,6 +35,7 @@ services:
     build: ./nginx
     volumes:
       - ./djblog/static:/var/www/static
+    restart: always
     links:
       - app
     ports:

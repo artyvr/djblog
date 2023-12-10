@@ -28,9 +28,13 @@ services:
       - ./djblog:/djblog
     environment:
       - DB_HOST=database
+      - DB_PORT=5432
       - DB_NAME=djblog
       - DB_USER=djblog
       - DB_PASS=djblog
+      - APP_DEBUG=1
+      - APP_SECRET_KEY=very_secret_key
+      - APP_ALLOWED_HOSTS=localhost 127.0.0.1 [::1]
     restart: always
     command: python manage.py runserver 0.0.0.0:8000
     links:

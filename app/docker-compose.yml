@@ -32,7 +32,7 @@ services:
       - DB_USER=djblog
       - DB_PASS=djblog
     restart: always
-    command: python manage.py runserver --bind 0.0.0.0:8000
+    command: python manage.py runserver 0.0.0.0:8000
     links:
       - database
       - redis

@@ -13,7 +13,10 @@ class ObjectDetailMixin:
 
     def get(self, request, slug):
         obj = get_object_or_404(self.model, slug__iexact=slug)
-        return render(request, self.template, {self.model.__name__.lower(): obj, 'admin': obj, 'detail': True})
+        return render(request,
+                      self.template,
+                      {self.model.__name__.lower(): obj, 'admin': obj, 'detail': True}
+                      )
 
 
 class ObjectCreateMixin:
@@ -44,7 +47,10 @@ class ObjectUpdateMixin:
     def get(self, request, slug):
         obj = self.model.objects.get(slug__iexact=slug)
         bound_form = self.model_form(instance=obj)
-        return render (request, self.template, {'form': bound_form, self.model.__name__.lower(): obj})
+        return render (request,
+                       self.template,
+                       {'form': bound_form, self.model.__name__.lower(): obj}
+                       )
 
     def post(self, request, slug):
         obj = self.model.objects.get(slug__iexact=slug)
@@ -54,7 +60,10 @@ class ObjectUpdateMixin:
             new_obj = bound_form.save()
             cache.delete(settings.POSTS_CACHE_NAME)
             return redirect(new_obj)
-        return render (request, self.template, {'form': bound_form, self.model.__name__.lower(): obj})
+        return render (request,
+                       self.template,
+                       {'form': bound_form, self.model.__name__.lower(): obj}
+                       )
 
 
 class ObjectDeleteMixin:

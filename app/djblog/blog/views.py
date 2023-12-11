@@ -2,10 +2,12 @@
 
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import View
+from django.db.models import Prefetch
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
 from django.conf import settings
 from django.core.cache import cache
+from django.contrib.auth.models import User
 from .models import Post, Tag
 from .utils import ObjectDetailMixin, ObjectCreateMixin, ObjectUpdateMixin, ObjectDeleteMixin
 from .forms import TagForm, PostForm
@@ -14,20 +16,19 @@ from .forms import TagForm, PostForm
 
 def posts_list(request):
     """ Get all posts with pagination """
-    #posts = Post.objects.all()
-
     posts_cache = cache.get(settings.POSTS_CACHE_NAME)
     if posts_cache:
         posts = posts_cache
     else:
-        posts = Post.objects.all()
-        cache.set(settings.POSTS_CACHE_NAME, posts, 60)
-
+        posts = Post.objects.all().prefetch_related(
+            Prefetch('tags', queryset=Tag.objects.all().only('title', 'slug')),
+            Prefetch('user', queryset=User.objects.all().only('username'))
+        )
+        cache.set(settings.POSTS_CACHE_NAME, posts, 60 * 60)
     paginator = Paginator(posts, 3)
     page_number = request.GET.get('page', 1)
     page = paginator.get_page(page_number)
     is_paginated = page.has_other_pages()
-
     if page.has_previous():
         prev_url = f'?page={page.previous_page_number()}'
     else:
@@ -77,7 +78,9 @@ class PostDelete(LoginRequiredMixin, ObjectDeleteMixin, View):
 
 def tags_list(request):
     """ Get all tags """
-    tags = Tag.objects.all()
+    tags = Tag.objects.all().prefetch_related(
+            Prefetch('user', queryset=User.objects.all().only('username'))
+            )
     return render(request, 'blog/tags_list.html', {'tags': tags})
 
 
@@ -85,7 +88,10 @@ class TagDetail(View):
     """ Tag detail """
     def get(self, request, slug):
         tag = get_object_or_404(Tag, slug__iexact=slug)
-        post_with_tag = Post.objects.filter(tags=tag)
+        post_with_tag = Post.objects.filter(tags=tag).prefetch_related(
+            Prefetch('tags', queryset=Tag.objects.all().only('title', 'slug')),
+            Prefetch('user', queryset=User.objects.all().only('username'))
+            )
         paginator = Paginator(post_with_tag, 4)
         page_number = request.GET.get('page', 1)
         page = paginator.get_page(page_number)

@@ -136,8 +136,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Custom settings
 
-#DJANGO_SUPERUSER_PASSWORD = os.environ.get('SUPERUSER_PASSWORD')
-
 CACHES = {
     "default": {
         "BACKEND": "django.core.cache.backends.redis.RedisCache",
@@ -146,5 +144,7 @@ CACHES = {
 }
 
 POSTS_CACHE_NAME = 'posts_cache'
+
 LOGIN_REDIRECT_URL = "/"
+
 LOGOUT_REDIRECT_URL = "/"

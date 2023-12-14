@@ -11,7 +11,7 @@ fi
 # Collect Django static
 python manage.py collectstatic --noinput
 
-# Run Gunicorn port 8000
+# Run Gunicorn
 gunicorn djblog.wsgi --bind 0.0.0.0:8000
 
 exec "$@"

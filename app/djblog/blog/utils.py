@@ -12,6 +12,7 @@ class ObjectDetailMixin:
     template = None
 
     def get(self, request, slug):
+        """ Get request """
         obj = get_object_or_404(self.model, slug__iexact=slug)
         return render(request,
                       self.template,
@@ -25,10 +26,12 @@ class ObjectCreateMixin:
     template = None
 
     def get(self, request):
+        """ Get request """
         form = self.form_model()
         return render(request, self.template, {'form': form})
 
     def post(self, request):
+        """ Post request """
         bound_form = self.form_model(request.POST)
         if bound_form.is_valid():
             bound_form.instance.user = request.user
@@ -45,6 +48,7 @@ class ObjectUpdateMixin:
     template = None
 
     def get(self, request, slug):
+        """ Get request """
         obj = self.model.objects.get(slug__iexact=slug)
         bound_form = self.model_form(instance=obj)
         return render (request,
@@ -53,6 +57,7 @@ class ObjectUpdateMixin:
                        )
 
     def post(self, request, slug):
+        """ Post request """
         obj = self.model.objects.get(slug__iexact=slug)
         bound_form = self.model_form(request.POST, instance=obj)
         if bound_form.is_valid():
@@ -73,10 +78,12 @@ class ObjectDeleteMixin:
     redirect_url = None
 
     def get(self, request, slug):
+        """ Get request """
         obj = self.model.objects.get(slug__iexact=slug)
         return render(request, self.template, {self.model.__name__.lower(): obj})
 
     def post(self, request, slug):
+        """ Post request """
         obj = self.model.objects.get(slug__iexact=slug)
         obj.delete()
         cache.delete(settings.POSTS_CACHE_NAME)

@@ -46,19 +46,21 @@ class PostModelTestCase(TestCase):
             password=USER_PASSWORD,
             email=USER_EMAIL)
         self.user.save()
-        self.tag = Tag(title='Test title',
-                         user=self.user)
-        self.tag.save()
-        self.post = Post(title='Test title',
-                         body='Test body',
-                         tag=self.tag,
+        self.post = Post(title='Test post title',
+                         body='Test post body',
                          user=self.user)
         self.post.save()
 
     def tearDown(self):
-        self.tag.delete()
         self.post.delete()
         self.user.delete()
+
+    def test_update_post(self):
+        """ Update post test """
+        self.post = Post.objects.get(title__iexact='Test post title')
+        self.post.body = 'Update post text'
+        self.post.save()
+
 
 
 class TagModelTestCase(TestCase):
@@ -70,10 +72,17 @@ class TagModelTestCase(TestCase):
             password=USER_PASSWORD,
             email=USER_EMAIL)
         self.user.save()
-        self.tag = Tag(title='Test title',
-                         user=self.user)
+        self.tag = Tag(title='Tag',
+                       slug='test-tag-2-slug',
+                       user=self.user)
         self.tag.save()
 
     def tearDown(self):
         self.tag.delete()
         self.user.delete()
+
+    def test_update_tag(self):
+        """ Update tag test """
+        self.tag = Tag.objects.get(title__iexact='Tag')
+        self.tag.title = 'Tag 2'
+        self.tag.save()

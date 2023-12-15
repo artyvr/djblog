@@ -39,7 +39,10 @@ class PostForm(forms.ModelForm):
         }
 
     def clean_slug(self):
+        """ Slug validation """
         new_slug = self.cleaned_data['slug'].lower()
         if new_slug == 'create':
-            raise ValidationError('Slug не можеть иметь имя create')
+            raise ValidationError('Slug не можеть быть create')
+        if Tag.objects.filter(slug__iexact=new_slug).count():
+            raise ValidationError(f'Slug с именем "{new_slug}" уже существует!')
         return new_slug

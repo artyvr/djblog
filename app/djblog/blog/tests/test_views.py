@@ -1,6 +1,8 @@
 """ Test blog views """
 
 from django.test import TestCase
+from django.contrib.auth import get_user_model, authenticate
+from blog.models import Post
 
 
 class ViewsTestCase(TestCase):
@@ -35,3 +37,19 @@ class ViewsTestCase(TestCase):
         """ The create post page load (/blog/post/create/) (Permission Denied) """
         response = self.client.get('/blog/post/create/')
         self.assertEqual(response.status_code, 403)
+
+    def test_post_detail_load(self):
+        user = get_user_model().objects.create_user(
+            username='test',
+            password='23TestUser23',
+            email='test@test.com')
+        user.save()
+        
+        post = Post(title='Test post title',
+                    body='Test post body',
+                    user=user)
+        post.save()
+
+        post = Post.objects.get(title__iexact='Test post title')
+        response = self.client.get(f'/blog/post/{post.slug}/')
+        self.assertEqual(response.status_code, 200)

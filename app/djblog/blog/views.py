@@ -25,7 +25,7 @@ def posts_list(request):
             Prefetch('user', queryset=User.objects.all().only('username'))
         )
         cache.set(settings.POSTS_CACHE_NAME, posts, 86400)
-    paginator = Paginator(posts, 3)
+    paginator = Paginator(posts, 5)
     page_number = request.GET.get('page', 1)
     page = paginator.get_page(page_number)
     is_paginated = page.has_other_pages()

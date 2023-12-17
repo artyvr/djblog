@@ -20,7 +20,7 @@ def gen_slug(s):
                        'ч': 'ch', 'ш': 'sh', 'щ': 'shch', 
                        'ы': 'i', 'э': 'e', 'ю': 'yu','я': 'ya'}
     new_slug = slugify(''.join(transliteration.get(w, w) for w in s.lower()))
-    created_time = (datetime.datetime.now()).strftime('%d-%m-%Y_%H-%M-%S')
+    created_time = (datetime.datetime.now()).strftime('%d-%m-%Y_%H-%M-%S-%f')[:-4]
     return f'{new_slug}-created-{created_time}'
 
 

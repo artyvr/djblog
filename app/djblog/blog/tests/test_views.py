@@ -56,6 +56,37 @@ class ViewsTestCase(TestCase):
         response = self.client.get(f'/blog/post/{post.slug}/')
         self.assertEqual(response.status_code, 200)
 
+    def test_post_update_load(self):
+        """ The post update page load (/blog/post/<str:slug>/update/) """
+        user = get_user_model().objects.create_user(
+            username=USER_NAME,
+            password=USER_PASSWORD,
+            email=USER_EMAIL)
+        user.save()
+        post = Post(title='Test post title',
+                    body='Test post body',
+                    user=user)
+        post.save()
+        post = Post.objects.get(title__iexact='Test post title')
+        self.client.login(username=USER_NAME, password=USER_PASSWORD)
+        response = self.client.get(f'/blog/post/{post.slug}/update/')
+        self.assertEqual(response.status_code, 200)
+
+    def test_tag_detail_load(self):
+        """ The tag detail page load (/blog/tag/<str:slug>/) """
+        user = get_user_model().objects.create_user(
+            username=USER_NAME,
+            password=USER_PASSWORD,
+            email=USER_EMAIL)
+        user.save()
+        tag = Tag(title='Tag',
+                  slug='test-tag-slug',
+                  user=user)
+        tag.save()
+        tag = Tag.objects.get(title__iexact='Tag')
+        response = self.client.get(f'/blog/tag/{tag.slug}/')
+        self.assertEqual(response.status_code, 200)
+
     def test_tag_update_load(self):
         """ The tag update page load (/blog/tag/<str:slug>/update/) """
         user = get_user_model().objects.create_user(

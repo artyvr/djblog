@@ -21,8 +21,6 @@ class TagForm(forms.ModelForm):
         new_slug = self.cleaned_data['slug'].lower()
         if new_slug == 'create':
             raise ValidationError('Slug не можеть быть create')
-        if Tag.objects.filter(slug__iexact=new_slug).count():
-            raise ValidationError(f'Slug с именем "{new_slug}" уже существует!')
         return new_slug
 
 
@@ -33,7 +31,13 @@ class PostForm(forms.ModelForm):
         fields =['title', 'slug', 'body', 'tags']
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': ''}),
-            'slug': forms.TextInput(attrs={'class': 'form-control', 'placeholder': ''}),
+            'slug': forms.TextInput(attrs={
+                'class': 'form-control',
+                'disabled': 'disabled',
+                'data-bs-toggle': 'tooltip',
+                'data-bs-title': 'Сгенирится автоматически',
+                'placeholder': ''
+                }),
             'body': forms.Textarea(attrs={'class': 'form-control', 'placeholder': ''}),
             'tags': forms.SelectMultiple(attrs={'class': 'form-control', 'placeholder': ''})
         }
@@ -43,6 +47,4 @@ class PostForm(forms.ModelForm):
         new_slug = self.cleaned_data['slug'].lower()
         if new_slug == 'create':
             raise ValidationError('Slug не можеть быть create')
-        if Tag.objects.filter(slug__iexact=new_slug).count():
-            raise ValidationError(f'Slug с именем "{new_slug}" уже существует!')
         return new_slug

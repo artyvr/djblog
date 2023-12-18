@@ -42,7 +42,7 @@ class ViewsTestCase(TestCase):
         self.assertEqual(response.status_code, 403)
 
     def test_post_detail_load(self):
-        """ The post detail page load (/blog/post/<str:slug>/) """
+        """ The post detail page load (GET /blog/post/<str:slug>/) """
         user = get_user_model().objects.create_user(
             username=USER_NAME,
             password=USER_PASSWORD,
@@ -57,7 +57,7 @@ class ViewsTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_post_update_load(self):
-        """ The post update page load (/blog/post/<str:slug>/update/) """
+        """ The post update page load (GET /blog/post/<str:slug>/update/) """
         user = get_user_model().objects.create_user(
             username=USER_NAME,
             password=USER_PASSWORD,
@@ -72,8 +72,56 @@ class ViewsTestCase(TestCase):
         response = self.client.get(f'/blog/post/{post.slug}/update/')
         self.assertEqual(response.status_code, 200)
 
+    def test_post_update(self):
+        """ The post update submit (POST /blog/post/<str:slug>/update/) """
+        user = get_user_model().objects.create_user(
+            username=USER_NAME,
+            password=USER_PASSWORD,
+            email=USER_EMAIL)
+        user.save()
+        post = Post(title='Test post title',
+                    body='Test post body',
+                    user=user)
+        post.save()
+        post = Post.objects.get(title__iexact='Test post title')
+        self.client.login(username=USER_NAME, password=USER_PASSWORD)
+        response = self.client.post(f'/blog/post/{post.slug}/update/')
+        self.assertEqual(response.status_code, 302)
+
+    def test_post_delete_load(self):
+        """ The post delete page load (GET /blog/post/<str:slug>/delete/) """
+        user = get_user_model().objects.create_user(
+            username=USER_NAME,
+            password=USER_PASSWORD,
+            email=USER_EMAIL)
+        user.save()
+        post = Post(title='Test post title',
+                    body='Test post body',
+                    user=user)
+        post.save()
+        post = Post.objects.get(title__iexact='Test post title')
+        self.client.login(username=USER_NAME, password=USER_PASSWORD)
+        response = self.client.get(f'/blog/post/{post.slug}/delete/')
+        self.assertEqual(response.status_code, 200)
+
+    def test_post_delete(self):
+        """ The post delete submit (POST /blog/post/<str:slug>/delete/) """
+        user = get_user_model().objects.create_user(
+            username=USER_NAME,
+            password=USER_PASSWORD,
+            email=USER_EMAIL)
+        user.save()
+        post = Post(title='Test post title',
+                    body='Test post body',
+                    user=user)
+        post.save()
+        post = Post.objects.get(title__iexact='Test post title')
+        self.client.login(username=USER_NAME, password=USER_PASSWORD)
+        response = self.client.post(f'/blog/post/{post.slug}/delete/')
+        self.assertEqual(response.status_code, 302)
+
     def test_tag_detail_load(self):
-        """ The tag detail page load (/blog/tag/<str:slug>/) """
+        """ The tag detail page load (GET /blog/tag/<str:slug>/) """
         user = get_user_model().objects.create_user(
             username=USER_NAME,
             password=USER_PASSWORD,
@@ -88,7 +136,7 @@ class ViewsTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_tag_update_load(self):
-        """ The tag update page load (/blog/tag/<str:slug>/update/) """
+        """ The tag update page load (GET /blog/tag/<str:slug>/update/) """
         user = get_user_model().objects.create_user(
             username=USER_NAME,
             password=USER_PASSWORD,
@@ -102,3 +150,35 @@ class ViewsTestCase(TestCase):
         self.client.login(username=USER_NAME, password=USER_PASSWORD)
         response = self.client.get(f'/blog/tag/{tag.slug}/update/')
         self.assertEqual(response.status_code, 200)
+
+    def test_tag_delete_load(self):
+        """ The tag delete page load (GET /blog/tag/<str:slug>/delete/) """
+        user = get_user_model().objects.create_user(
+            username=USER_NAME,
+            password=USER_PASSWORD,
+            email=USER_EMAIL)
+        user.save()
+        tag = Tag(title='Tag',
+                  slug='test-tag-slug',
+                  user=user)
+        tag.save()
+        tag = Tag.objects.get(title__iexact='Tag')
+        self.client.login(username=USER_NAME, password=USER_PASSWORD)
+        response = self.client.get(f'/blog/tag/{tag.slug}/delete/')
+        self.assertEqual(response.status_code, 200)
+
+    def test_tag_delete(self):
+        """ The tag delete submit (POST /blog/tag/<str:slug>/delete/) """
+        user = get_user_model().objects.create_user(
+            username=USER_NAME,
+            password=USER_PASSWORD,
+            email=USER_EMAIL)
+        user.save()
+        tag = Tag(title='Tag',
+                  slug='test-tag-slug',
+                  user=user)
+        tag.save()
+        tag = Tag.objects.get(title__iexact='Tag')
+        self.client.login(username=USER_NAME, password=USER_PASSWORD)
+        response = self.client.post(f'/blog/tag/{tag.slug}/delete/')
+        self.assertEqual(response.status_code, 302)

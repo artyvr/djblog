@@ -45,7 +45,8 @@ class Post(models.Model):
         return reverse('post_delete_url', kwargs={'slug': self.slug})
 
     def save(self, *args, **kwargs):
-        self.slug = gen_slug(self.title)
+        if not self.id:
+            self.slug = gen_slug(self.title)
         super().save(*args, **kwargs)
 
     def __str__(self):

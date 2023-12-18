@@ -24,7 +24,7 @@ def posts_list(request):
             Prefetch('tags', queryset=Tag.objects.all().only('title', 'slug')),
             Prefetch('user', queryset=User.objects.all().only('username'))
         )
-        cache.set(settings.POSTS_CACHE_NAME, posts, 86400)
+        cache.set(settings.POSTS_CACHE_NAME, posts, settings.POSTS_CACHE_TIMEOUT)
     paginator = Paginator(posts, 5)
     page_number = request.GET.get('page', 1)
     page = paginator.get_page(page_number)

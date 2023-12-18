@@ -33,9 +33,9 @@ class PostForm(forms.ModelForm):
             'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': ''}),
             'slug': forms.TextInput(attrs={
                 'class': 'form-control',
-                'disabled': 'disabled',
+                'readonly': 'readonly',
                 'data-bs-toggle': 'tooltip',
-                'data-bs-title': 'Сгенирится автоматически',
+                'data-bs-title': 'Создаётся автоматически',
                 'placeholder': ''
                 }),
             'body': forms.Textarea(attrs={'class': 'form-control', 'placeholder': ''}),

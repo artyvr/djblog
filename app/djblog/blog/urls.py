@@ -1,8 +1,18 @@
 """ Blog urls """
 
 from django.urls import path
-from .views import posts_list, PostCreate, PostDetail, tags_list, \
-    TagCreate, TagDetail, TagUpdate, PostUpdate, TagDelete, PostDelete
+from .views import (
+    posts_list,
+    PostCreate,
+    PostDetail,
+    tags_list,
+    TagCreate,
+    TagDetail,
+    TagUpdate,
+    PostUpdate,
+    TagDelete,
+    PostDelete
+    )
 
 urlpatterns = [
     path('', posts_list, name='posts_list_url'),

@@ -9,7 +9,12 @@ from django.conf import settings
 from django.core.cache import cache
 from django.contrib.auth.models import User
 from .models import Post, Tag
-from .utils import ObjectDetailMixin, ObjectCreateMixin, ObjectUpdateMixin, ObjectDeleteMixin
+from .utils import (
+    ObjectDetailMixin,
+    ObjectCreateMixin,
+    ObjectUpdateMixin,
+    ObjectDeleteMixin
+    )
 from .forms import TagForm, PostForm
 
 

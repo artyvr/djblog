@@ -16,6 +16,6 @@ jobs:
     - name: Install dependencies
       run: python -m pip install --upgrade pip
     - name: Start docker-compose
-      run: docker-compose -f docker-compose.yml up -d  
+      run: docker-compose -f ./app/docker-compose.yml up -d  
     - name: Run tests
       run: docker-compose run --rm app sh -c "python manage.py test blog.tests"

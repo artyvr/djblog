@@ -95,6 +95,39 @@ class ViewsTestCase(TestCase):
                                     )
         self.assertEqual(response.status_code, 302)
 
+    def test_post_user_load(self):
+        """ Test get user`s posts (GET /blog/post/user/<str:user>/) """
+        user = get_user_model().objects.create_user(
+            username=USER_NAME,
+            password=USER_PASSWORD,
+            email=USER_EMAIL)
+        user.save()
+        slug=gen_slug('Test post title')
+        post = Post(title='Test post title',
+                    slug=slug,
+                    body='Test post body',
+                    user=user)
+        post.save()
+        response = self.client.get(f'/blog/post/user/{user.username}/')
+        self.assertEqual(response.status_code, 200)
+
+    def test_post_serch_load(self):
+        """ Test post search (GET /blog/?q=<str>) """
+        user = get_user_model().objects.create_user(
+            username=USER_NAME,
+            password=USER_PASSWORD,
+            email=USER_EMAIL)
+        user.save()
+        slug=gen_slug('Test post title')
+        post = Post(title='Test post title',
+                    slug=slug,
+                    body='Test post body',
+                    user=user)
+        post.save()
+        response = self.client.get('/blog/?q=Test+post+title')
+        self.assertEqual(response.status_code, 200)
+
+
     def test_post_delete_load(self):
         """ The post delete page load (GET /blog/post/<str:slug>/delete/) """
         user = get_user_model().objects.create_user(

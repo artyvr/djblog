@@ -17,6 +17,9 @@
           <span class="fs-4">DJ Blog</span>
         </a>
         <nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto">
+          <form class="d-flex" role="search" action="">
+            <input type="search" name="q" class="form-control form-control-sm me-3 py-2 link-body-emphasis text-decoration-none" placeholder="Поиск" aria-label="Search">
+          <form>
           <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="{% url 'posts_list_url' %}">Посты</a>
           <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="{% url 'tags_list_url' %}">Тэги</a>
           {% if request.user.is_authenticated %}

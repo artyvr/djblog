@@ -1,0 +1,14 @@
+{% extends 'blog/base_blog.html' %}
+{% block css %}{% endblock%}
+{% block title %}{{ post.title }}{% endblock%}
+{% block content %}
+{% include 'blog/includes/back_btn.html' %}
+<div class="pricing-header p-3 pb-md-4 mx-auto text-center">
+    <h1 class="display-4 fw-normal text-body-emphasis">{{ user.username|title }}</h1>
+    <p class="fs-5 text-body-secondary">Посты пользователя "{{ user.username }}"</p>
+</div>
+{% for post in user.posts.all %}
+  {% include 'blog/includes/post_detail_template.html' %}
+{% endfor %}
+{% endblock%}
+{% block js %}{% endblock%}

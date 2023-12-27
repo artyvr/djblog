@@ -11,7 +11,8 @@ from .views import (
     TagUpdate,
     PostUpdate,
     TagDelete,
-    PostDelete
+    PostDelete,
+    PostUser
     )
 
 urlpatterns = [
@@ -20,6 +21,7 @@ urlpatterns = [
     path('post/<str:slug>/', PostDetail.as_view(), name='post_detail_url'),
     path('post/<str:slug>/update/', PostUpdate.as_view(), name='post_update_url'),
     path('post/<str:slug>/delete/', PostDelete.as_view(), name='post_delete_url'),
+    path('post/user/<str:user>/', PostUser.as_view(), name='post_user_url'),
 
     path('tags/', tags_list, name='tags_list_url'),
     path('tag/create/', TagCreate.as_view(), name='tag_create_url'),

@@ -1,0 +1,12 @@
+[Unit]
+Description=Djblog docker-compose service
+Requires=docker.service
+After=docker.service
+
+[Service]
+Restart=always
+ExecStart=/usr/bin/docker-compose -f docker-compose.prod.yml start
+ExecStop=/usr/bin/docker-compose -f docker-compose.prod.yml stop
+
+[Install]
+WantedBy=default.target
